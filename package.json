@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/generateMapsIndex.js && node scripts/generateSoundsIndex.js && node scripts/generateMaterialsIndex.js && node scripts/generateResourceIndex.js",
+    "build": "vite build",
+    "generate": "node scripts/generateMapsIndex.js && node scripts/generateSoundIndex.js && node scripts/generateMaterialsIndex.js && node scripts/generateResourceIndex.js",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -1,9 +1,18 @@
-// filepath: /c:/Users/Ciriaco/Documents/GitHub/143AM/scripts/generateMapsIndex.js
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const mapsDir = path.join(__dirname, "../dist/maps");
 const outputFilePath = path.join(mapsDir, "index.html");
+
+// Ensure the maps directory exists
+if (!fs.existsSync(mapsDir)) {
+  fs.mkdirSync(mapsDir, { recursive: true });
+}
 
 fs.readdir(mapsDir, (err, files) => {
   if (err) {
@@ -21,6 +30,6 @@ fs.readdir(mapsDir, (err, files) => {
       console.error("Error writing index.html:", err);
       return;
     }
-    console.log("index.html generated successfully");
+    console.log("Maps/ index.html generated successfully");
   });
 });

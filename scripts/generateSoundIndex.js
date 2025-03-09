@@ -1,8 +1,18 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
-const soundsDir = path.join(__dirname, "../dist/sounds");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const soundsDir = path.join(__dirname, "../dist/sound");
 const outputFilePath = path.join(soundsDir, "index.html");
+
+// Ensure the sounds directory exists
+if (!fs.existsSync(soundsDir)) {
+  fs.mkdirSync(soundsDir, { recursive: true });
+}
 
 fs.readdir(soundsDir, (err, files) => {
   if (err) {
@@ -22,6 +32,6 @@ fs.readdir(soundsDir, (err, files) => {
       console.error("Error writing index.html:", err);
       return;
     }
-    console.log("index.html generated successfully");
+    console.log("Sound/ index.html generated successfully");
   });
 });

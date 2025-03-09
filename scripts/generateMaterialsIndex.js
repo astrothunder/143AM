@@ -1,8 +1,17 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const materialsDir = path.join(__dirname, "../dist/materials");
 const outputFilePath = path.join(materialsDir, "index.html");
+
+if (!fs.existsSync(materialsDir)) {
+  fs.mkdirSync(materialsDir, { recursive: true });
+}
 
 fs.readdir(materialsDir, (err, files) => {
   if (err) {
@@ -23,6 +32,6 @@ fs.readdir(materialsDir, (err, files) => {
       console.error("Error writing index.html:", err);
       return;
     }
-    console.log("index.html generated successfully");
+    console.log("Materials/ index.html generated successfully");
   });
 });

@@ -1,8 +1,17 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const resourceDir = path.join(__dirname, "../dist/resource");
 const outputFilePath = path.join(resourceDir, "index.html");
+
+if (!fs.existsSync(resourceDir)) {
+  fs.mkdirSync(resourceDir, { recursive: true });
+}
 
 fs.readdir(resourceDir, (err, files) => {
   if (err) {
@@ -23,6 +32,6 @@ fs.readdir(resourceDir, (err, files) => {
       console.error("Error writing index.html:", err);
       return;
     }
-    console.log("index.html generated successfully");
+    console.log("Resource/ index.html generated successfully");
   });
 });

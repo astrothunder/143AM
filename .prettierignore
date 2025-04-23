@@ -1,0 +1,9 @@
+node_modules
+dist
+coverage
+.editorconfig
+.gitignore
+.prettierignore
+package-lock.json
+pnpm-lock.yaml
+*.svg

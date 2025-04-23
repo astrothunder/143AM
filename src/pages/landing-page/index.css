@@ -1,0 +1,16 @@
+.landing-page-main {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  margin: 0;
+
+  /* Text Styles */
+  color: white;
+}
+
+.tv-stand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}

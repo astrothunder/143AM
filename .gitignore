@@ -22,11 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# static files
-public/maps/*
-public/sound/*
-public/images/*
-public/fonts/*
-public/materials/*
-public/resource/*

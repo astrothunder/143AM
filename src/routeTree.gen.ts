@@ -11,14 +11,16 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as AboutImport } from './routes/about'
+import { Route as WisdomImport } from './routes/wisdom'
 import { Route as IndexImport } from './routes/index'
+import { Route as WisdomIndexImport } from './routes/wisdom/index'
+import { Route as WisdomNinjascriptIndicatorsImport } from './routes/wisdom/ninjascript-indicators'
 
 // Create/Update Routes
 
-const AboutRoute = AboutImport.update({
-  id: '/about',
-  path: '/about',
+const WisdomRoute = WisdomImport.update({
+  id: '/wisdom',
+  path: '/wisdom',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -27,6 +29,19 @@ const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const WisdomIndexRoute = WisdomIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => WisdomRoute,
+} as any)
+
+const WisdomNinjascriptIndicatorsRoute =
+  WisdomNinjascriptIndicatorsImport.update({
+    id: '/ninjascript-indicators',
+    path: '/ninjascript-indicators',
+    getParentRoute: () => WisdomRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -39,51 +54,88 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
+    '/wisdom': {
+      id: '/wisdom'
+      path: '/wisdom'
+      fullPath: '/wisdom'
+      preLoaderRoute: typeof WisdomImport
       parentRoute: typeof rootRoute
+    }
+    '/wisdom/ninjascript-indicators': {
+      id: '/wisdom/ninjascript-indicators'
+      path: '/ninjascript-indicators'
+      fullPath: '/wisdom/ninjascript-indicators'
+      preLoaderRoute: typeof WisdomNinjascriptIndicatorsImport
+      parentRoute: typeof WisdomImport
+    }
+    '/wisdom/': {
+      id: '/wisdom/'
+      path: '/'
+      fullPath: '/wisdom/'
+      preLoaderRoute: typeof WisdomIndexImport
+      parentRoute: typeof WisdomImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface WisdomRouteChildren {
+  WisdomNinjascriptIndicatorsRoute: typeof WisdomNinjascriptIndicatorsRoute
+  WisdomIndexRoute: typeof WisdomIndexRoute
+}
+
+const WisdomRouteChildren: WisdomRouteChildren = {
+  WisdomNinjascriptIndicatorsRoute: WisdomNinjascriptIndicatorsRoute,
+  WisdomIndexRoute: WisdomIndexRoute,
+}
+
+const WisdomRouteWithChildren =
+  WisdomRoute._addFileChildren(WisdomRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/wisdom': typeof WisdomRouteWithChildren
+  '/wisdom/ninjascript-indicators': typeof WisdomNinjascriptIndicatorsRoute
+  '/wisdom/': typeof WisdomIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/wisdom/ninjascript-indicators': typeof WisdomNinjascriptIndicatorsRoute
+  '/wisdom': typeof WisdomIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/wisdom': typeof WisdomRouteWithChildren
+  '/wisdom/ninjascript-indicators': typeof WisdomNinjascriptIndicatorsRoute
+  '/wisdom/': typeof WisdomIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths: '/' | '/wisdom' | '/wisdom/ninjascript-indicators' | '/wisdom/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to: '/' | '/wisdom/ninjascript-indicators' | '/wisdom'
+  id:
+    | '__root__'
+    | '/'
+    | '/wisdom'
+    | '/wisdom/ninjascript-indicators'
+    | '/wisdom/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
+  WisdomRoute: typeof WisdomRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  WisdomRoute: WisdomRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -97,14 +149,26 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about"
+        "/wisdom"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/about": {
-      "filePath": "about.tsx"
+    "/wisdom": {
+      "filePath": "wisdom.tsx",
+      "children": [
+        "/wisdom/ninjascript-indicators",
+        "/wisdom/"
+      ]
+    },
+    "/wisdom/ninjascript-indicators": {
+      "filePath": "wisdom/ninjascript-indicators.tsx",
+      "parent": "/wisdom"
+    },
+    "/wisdom/": {
+      "filePath": "wisdom/index.tsx",
+      "parent": "/wisdom"
     }
   }
 }
